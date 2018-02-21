@@ -9,6 +9,8 @@
 #ifndef I2C_H
 #define	I2C_H
 
+#include "structures.h"
+
 void I2C_Master_Wait()
 {
   while (SSP1STATbits.R_nW || (SSP1CON2 & 0x1F));
@@ -51,7 +53,15 @@ void I2C_Master_nAck(void) {
     while(SSP1CON2bits.ACKEN);
 }
 
-void I2C_Master_Write(unsigned data)
+void I2C_Master_Write_control_byte(unsigned char control_code, unsigned char chip_select, unsigned char read_write_bit)
+{
+  SSP1BUF = (0xF0 & (control_code << 4)) + (0x0E & (chip_select << 1)) + read_write_bit;
+  while(SSP1STATbits.BF);
+  I2C_Master_Wait();
+  I2C_Master_Wait_Ack();
+}
+
+void I2C_Master_Write(unsigned char data)
 {
   SSP1BUF = data;
   while(SSP1STATbits.BF);
