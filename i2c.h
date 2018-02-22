@@ -11,16 +11,20 @@
 
 #include "structures.h"
 
+// Wait for buffer empty
 void I2C_Master_Wait()
 {
   while (SSP1STATbits.R_nW || (SSP1CON2 & 0x1F));
 }
 
-void I2C_Master_Wait_Ack(void) {
-    while(SSP1CON2bits.ACKSTAT) {
+// Wait for ack from device
+unsigned char I2C_Master_Wait_Ack(void) {
+    if(SSP1CON2bits.ACKSTAT) {
         LED_RED = 1;
+        return(1);
     }
     LED_RED = 0;
+    return(0);
 }
 
 void I2C_Master_Start()
@@ -77,6 +81,16 @@ unsigned short I2C_Master_Read(void)
   temp = SSP1BUF;
   I2C_Master_Wait();
   return temp;
+}
+
+
+void acknowledge_polling(unsigned char control_code, 
+        unsigned char chip_select) {
+    do {
+        I2C_Master_Start();                     // Start condition
+        I2C_Master_Write_control_byte(control_code, chip_select, 
+                WRITE_BIT);  
+    } while (I2C_Master_Wait_Ack());
 }
 
 #endif	/* I2C_H */
