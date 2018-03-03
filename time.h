@@ -69,5 +69,14 @@ void get_time(Time time) {
     return_UART_answer(GET_TIME, tab, 7);
 }
 
+void init_time(Time* time) {
+    (*time).century = 19;
+    (*time).years = 70;
+    (*time).months = 1;
+    (*time).days = 1;
+    (*time).hours = 0;
+    (*time).minutes = 0;
+    (*time).seconds = 0;
+}
 #endif	/* TIME_H */
 
