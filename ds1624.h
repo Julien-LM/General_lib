@@ -28,7 +28,7 @@ void read_temp(char *temp) {
     I2C_Master_Stop();                      // Stop condition
 }
 
-char start_convert(void) {
+void start_convert(void) {
     I2C_Master_Start();                     // Start condition
     I2C_Master_Write_control_byte(CONTROL_CODE_DS1624, CHIP_SEL_N0_DS1624, 
             WRITE_BIT);                     // Write control byte + write

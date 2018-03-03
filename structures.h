@@ -35,8 +35,13 @@ typedef struct storage_struct MEM;
 struct storage_struct {
     unsigned char data_storage[DATA_STORAGE_SIZE];
     unsigned short data_storage_index;
+    unsigned char data_storage_tampon[TAMPON_SIZE];
+    unsigned char tampon_index;
     unsigned char data_storage_overflow;
     unsigned long temp_sample_rate;
+    unsigned long address_max24aa;
+    unsigned long data_number;
+    unsigned char page_size_reach;
 };
 
 #endif	/* STRUCTURES_H */
